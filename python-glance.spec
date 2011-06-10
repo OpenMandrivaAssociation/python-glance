@@ -2,7 +2,7 @@
 %define module glance
 Name:           python-%module
 Version:        2011.1.%{bzr_rev}
-Release:        %mkrel 1
+Release:        %mkrel 2
 Summary:        Discover, Register and Retrieve virtual machine images
 License:        Apache Software Licene
 Group:          Development/Python
@@ -16,6 +16,7 @@ Buildrequires:	python-sphinx
 BuildRequires:  python-devel
 Requires:       python-cheetah python-gflags python-daemon python-routes python-argparse
 Requires:       python-eventlet python-webob python-sqlalchemy python-mysql
+Provides:	openstack-glance
 
 %description
 The Glance project provides services for discovering, registering,
