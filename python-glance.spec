@@ -1,8 +1,15 @@
 %define bzr_rev 86
-%define module glance
+%define module	glance
+%define	rel		3
+%if %mdkversion < 201100
+%define release %mkrel %{rel}
+%else
+%define	release	%{rel}
+%endif
+
 Name:           python-%module
 Version:        2011.1.%{bzr_rev}
-Release:        %mkrel 2
+Release:        %{release}
 Summary:        Discover, Register and Retrieve virtual machine images
 License:        Apache Software Licene
 Group:          Development/Python
@@ -14,8 +21,11 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  python-setuptools
 Buildrequires:	python-sphinx
 BuildRequires:  python-devel
-Requires:       python-cheetah python-gflags python-daemon python-routes python-argparse
+Requires:       python-cheetah python-gflags python-daemon python-routes
 Requires:       python-eventlet python-webob python-sqlalchemy python-mysql
+%if %mdkversion < 201100
+Requires:		python-argparse
+%endif
 Provides:	openstack-glance
 
 %description
