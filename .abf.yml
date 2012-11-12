@@ -1,0 +1,4 @@
+sources:
+  "glance-2011.2~bzr86.tar.gz:"	45c5d642be99b22d3aa0bb2bd98b4531f0676808
+  "glance.init:"	335e03712ab7bb680d61fad78cb0a6b636e61fa5
+  "glance.sysconfig:"	66eca953fae83c6963b14e8c7a0bfc2b46317c5f
