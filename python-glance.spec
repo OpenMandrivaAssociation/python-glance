@@ -62,3 +62,21 @@ install -D -m 0644 %{SOURCE2} %{buildroot}/%{_sysconfdir}/sysconfig/sysconfig.op
 %{_initrddir}/openstack-glance
 %{_sysconfdir}/sysconfig/sysconfig.openstack-glance
 
+
+
+%changelog
+* Thu Jul 12 2012 Lev Givon <lev@mandriva.org> 2011.1.86-3
++ Revision: 809059
+- Remove explicit dependency on argparse for 2011 and later.
+
+* Fri Jun 10 2011 Antoine Ginies <aginies@mandriva.com> 2011.1.86-2
++ Revision: 684118
+- provides openstack-glance
+
+* Wed Jun 08 2011 Antoine Ginies <aginies@mandriva.com> 2011.1.86-1
++ Revision: 683250
+- import python-glance
+
+
+* Wed Jun 8 2011 Antoine Ginies <aginies@mandriva.com> 2011.1
+- first release for Mandriva 

@@ -1,0 +1,116 @@
+#!/bin/sh
+#
+### BEGIN INIT INFO
+# Provides:          openstack-glance
+# Required-Start:    $syslog $remote_fs
+# Should-Start:      $time
+# Required-Stop:     $syslog $remote_fs
+# Default-Start:     3 5
+# Default-Stop:      0 1 2 6
+# Short-Description: OpenStack glance service
+# Description:       The OpenStack glance service allows to
+#	Discover, Register and Retrieve virtual machine images
+### END INIT INFO
+
+GLANCE_API_BIN=/usr/bin/glance-api
+GLANCE_REG_BIN=/usr/bin/glance-registry
+BAD=false
+for i in $GLANCE_API_BIN $GLANCE_REG_BIN; do
+	test -x $i && continue
+	echo "$i not installed"
+	BAD=true
+done
+
+# Special treatment of stop for LSB conformance
+if $BAD; then
+	test "$1" = "stop" && exit 0
+	exit 5
+fi
+
+# Check for existence of needed config file and read it
+GLANCE_CONFIG=/etc/sysconfig/openstack-glance
+if ! test -r $GLANCE_CONFIG; then
+	echo "$GLANCE_CONFIG not existing"
+	test "$1" = "stop" && exit 0
+	exit 6
+fi
+
+. $GLANCE_CONFIG
+
+. /etc/rc.status
+
+rc_reset
+
+# Return values acc. to LSB for all commands but status:
+# 0       - success
+# 1       - generic or unspecified error
+# 2       - invalid or excess argument(s)
+# 3       - unimplemented feature (e.g. "reload")
+# 4       - user had insufficient privileges
+# 5       - program is not installed
+# 6       - program is not configured
+# 7       - program is not running
+# 8--199  - reserved (8--99 LSB, 100--149 distrib, 150--199 appl)
+#
+# Note that starting an already running service, stopping
+# or restarting a not-running service as well as the restart
+# with force-reload (in case signaling is not supported) are
+# considered a success.
+
+case "$1" in
+    start)
+	echo -n "Starting glance-api"
+	/sbin/startproc -q $GLANCE_API_BIN $GLANCE_API_CONFIG
+	rc_status -v
+	echo -n "Starting glance-registry"
+	/sbin/startproc -q $GLANCE_REG_BIN $GLANCE_REGISTRY_CONFIG
+	rc_status -v
+	;;
+    stop)
+	echo -n "Shutting down glance-registry"
+	/sbin/killproc $GLANCE_REG_BIN
+	rc_status -v
+	echo -n "Shutting down glance-api"
+	/sbin/killproc $GLANCE_REG_BIN
+	rc_status -v
+	;;
+    try-restart|condrestart)
+	if test "$1" = "condrestart"; then
+		echo "${attn} Use try-restart ${done}(LSB)${attn} rather than condrestart ${warn}(RH)${norm}"
+	fi
+	$0 status
+	if test $? = 0; then
+		$0 restart
+	else
+		rc_reset	# Not running is not a failure.
+	fi
+	rc_status
+	;;
+    restart)
+	$0 stop
+	$0 start
+	rc_status
+	;;
+    force-reload)
+	$0 try-restart
+	rc_status
+	;;
+    reload)
+	echo -n "Reload service glance "
+	rc_failed 3
+	rc_status -v
+	;;
+    status)
+	echo -n "Checking for service glance-api"
+	/sbin/checkproc $GLANCE_API_BIN
+	rc_status -v
+	echo -n "Checking for service glance-registry"
+	/sbin/checkproc $GLANCE_REG_BIN
+	rc_status -v
+	;;
+    *)
+	echo "Usage: $0 {start|stop|status|try-restart|restart|force-reload|reload}"
+	exit 1
+	;;
+esac
+rc_exit

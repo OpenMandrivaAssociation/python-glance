@@ -1,0 +1,13 @@
+############ general
+## Path:        Cloud/OpenStack/glance
+## Description: Command Line for gance-api. The raw commandline passed on start.
+# Example:     --verbose --api_host=hostname.domainname --filesystem_store_datadir=/srv/images/
+## Type:        string
+## Default:     ''
+GLANCE_API_CONFIG=""
+
+## Path:        Cloud/OpenStack/glance
+## Description: Command Line for gance-registry. The raw commandline passed on start.
+## Type:        string
+## Default:     ''
+GLANCE_REGISTRY_CONFIG=""
