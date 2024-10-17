@@ -13,7 +13,7 @@ Release:        %{release}
 Summary:        Discover, Register and Retrieve virtual machine images
 License:        Apache Software Licene
 Group:          Development/Python
-Url:            http://glance.openstack.org/
+Url:            https://glance.openstack.org/
 Source:         http://hudson.openstack.org/job/glance-tarball/lastSuccessfulBuild/artifact/dist/glance-2011.2~bzr%{bzr_rev}.tar.gz
 Source1:        glance.init
 Source2:        glance.sysconfig
